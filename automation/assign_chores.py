@@ -1,32 +1,6 @@
 import json
 import random
 
-def assign_chores(roomies):
-  # Keep track of how many times we have failed to assign chores
-  # given the current configuration
-  fail_count = 0
-  
-  # The current chore assignment
-  chore_assignment = {}
-
-  # We look at each person, and try to build a chore schedule
-  for person in roomies:
-    # Get their name and a chore they can do
-    name = person['name']
-    chore = random.choice(person['allowable_chores'])
-    # Check to make sure no one else is already doing this chore
-    while (chore in chore_assignment):
-      fail_count += 1
-      chore = random.choice(person['allowable_chores'])
-      # If we have failed more than 1000 times, give up and call the function again
-      if (fail_count > 1000):
-        return assign_chores(roomies)
-    # Assign the chore
-    chore_assignment[chore] = name
-  # Print the final result!
-  print(json.dumps(chore_assignment, sort_keys=True, indent=2))
-
-
 shared_chores = ['living_room', 'dining_room', 'porches_and_shoe_area']
 downstairs_chores = ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'downstairs_bathroom']
 upstairs_chores = ['upstairs_kitchenn', 'upstairs_bathroom', 'hallway_and_stairwell']
@@ -56,6 +30,62 @@ roomies = [
     {'name':'Alex', 
       'allowable_chores': ['trash']}]
 
-print(json.dumps(roomies, sort_keys=True, indent=2))
-assign_chores(roomies)
+def print_allowable_chores():
+  ''' Print the allowable chores for each person
+  using json.dumps() '''
+  print(json.dumps(roomies, sort_keys=True, indent=2))
+
+def make_api_call():
+  print("Not done yet")
+
+def assign_chores():
+  # Keep track of how many times we have failed to assign chores
+  # given the current configuration
+  fail_count = 0
+  
+  # The current chore assignment
+  chore_assignment = {}
+
+  # We look at each person, and try to build a chore schedule
+  for person in roomies:
+    # Get their name and a chore they can do
+    name = person['name']
+    chore = random.choice(person['allowable_chores'])
+    # Check to make sure no one else is already doing this chore
+    while (chore in chore_assignment):
+      fail_count += 1
+      chore = random.choice(person['allowable_chores'])
+      # If we have failed more than 1000 times, give up and call the function again
+      if (fail_count > 1000):
+        return assign_chores()
+    # Assign the chore
+    chore_assignment[chore] = name
+  # Print the final result!
+  print(json.dumps(chore_assignment, sort_keys=True, indent=2))
+
+def main():
+    print("Welcome to the 427 Hamplace chore management script\n")
+
+    options = [
+        {"name": "Create json for chores", "fn": print_allowable_chores},
+        {"name": "Create json for chores", "fn": assign_chores},
+        {"name": "Create json for chores and post to website by making a rest api call", "fn": make_api_call},
+    ]
+
+    for i in range(len(options)):
+        print(str(i + 1) + ". " + options[i]["name"])
+
+    option = input("\nSelect an option: ")
+
+    try:
+        selected_option = options[int(option) - 1]
+    except:
+        print("\nERROR: Invalid option. Script done.")
+        return
+
+    print("")
+    selected_option["fn"]()
+
+if __name__ == '__main__':
+  main()
 
