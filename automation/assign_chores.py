@@ -1,6 +1,8 @@
 import json
 import random
 
+date = 'Sunday, Sept. 25th'
+
 shared_chores = ['living_room', 'dining_room', 'porches_and_shoe_area']
 downstairs_chores = ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'downstairs_bathroom']
 upstairs_chores = ['upstairs_kitchenn', 'upstairs_bathroom', 'hallway_and_stairwell']
@@ -60,16 +62,39 @@ def assign_chores():
         return assign_chores()
     # Assign the chore
     chore_assignment[chore] = name
+  return chore_assignment
   # Print the final result!
   print(json.dumps(chore_assignment, sort_keys=True, indent=2))
+
+def build_html_from_json():
+  chore_assignment = assign_chores()
+  base_str = '''
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-heading"> Chores must be done by midnight on <b>'''
+  base_str += date
+  base_str += '''</b> </div>
+          <table class="table table-striped">
+            <tr>  <td><b>Chore</b></td>                   <td><b>Name</b></td>    <td><b>Done?</b></td></tr>'''
+
+  for chore,name in chore_assignment.items():
+    base_str += '<tr> <td>'
+    base_str += chore
+    base_str += '</td> <td>'
+    base_str += name
+    base_str += '</td> <td> </td> </tr>'
+  
+  base_str += r'</table></div></div>'
+  print(base_str)
 
 def main():
     print("Welcome to the 427 Hamplace chore management script\n")
 
     options = [
-        {"name": "Create json for chores", "fn": print_allowable_chores},
+        {"name": "Show all the roomates, and what chores they can do", "fn": print_allowable_chores},
         {"name": "Create json for chores", "fn": assign_chores},
         {"name": "Create json for chores and post to website by making a rest api call", "fn": make_api_call},
+        {"name": "Create html", "fn": build_html_from_json},
     ]
 
     for i in range(len(options)):
