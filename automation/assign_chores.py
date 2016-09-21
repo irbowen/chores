@@ -12,25 +12,87 @@ default_upstairs = shared_chores + upstairs_chores
 
 roomies = [
     {'name':'Isaac', 
+      'charge_on_venmo' : False,
       'allowable_chores': default_downstairs},
     {'name':'Dieter', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'klemchowda',
       'allowable_chores': default_downstairs},
     {'name':'Faris', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'farisdizdarevic',
       'allowable_chores': default_downstairs},
     {'name':'Justin', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'kimsjustin',
       'allowable_chores': default_downstairs},
     {'name':'Amr', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'kimsjustin',
       'allowable_chores': shared_chores + ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'upstairs_bathroom']},
-    {'name':'Zac', 
-      'allowable_chores': default_upstairs},
     {'name':'Jake', 
-      'allowable_chores': default_upstairs},
-    {'name':'Marc', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'Jacob-Oestreich',
       'allowable_chores': default_upstairs},
     {'name':'Matt', 
+      'charge_on_venmo' : True,
+      'venmo_name' : 'Matt-Dolan-5',
+      'base_rent' : 476,
+      'allowable_chores': default_upstairs},
+    {'name':'Zac', 
+      'charge_on_venmo' : False,
+      'allowable_chores': default_upstairs},
+    {'name':'Marc', 
+      'charge_on_venmo' : False,
+      'base_rent' : 411,
       'allowable_chores': default_upstairs},
     {'name':'Alex', 
+      'charge_on_venmo' : False,
+      'base_rent' : 411,
       'allowable_chores': ['trash']}]
+
+def print_venmo_status():
+  for person in roomies:
+    if person['charge_on_venmo']:
+      out_str = person['name'] + ':' + person['venmo_name']
+      print(out_str)
+
+def calculate_total_charges():
+
+  total_rent = input('How much was rent? ')
+  rent_sum = 0
+  count = 0
+  for person in roomies:
+    if 'base_rent' in person:
+      rent_sum += person['base_rent']
+      count += 1
+  
+  print(rent_sum)
+  remaining_rent = float(total_rent) - float(rent_sum)
+  print(remaining_rent)
+  rent_per_person = remaining_rent / (len(roomies) - count)
+  print(rent_per_person)
+
+  for person in roomies:
+    if 'base_rent' not in person:
+      person['base_rent'] = rent_per_person
+
+  comcast = input('How much was comcast? ')
+  dte = input('How much was dte - electricity and gas? ')
+  aa_water = input('How much was ann arbor water? ')
+  utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
+  print('The utils will be %s per person' % (utils_per_person))
+  
+  for person in roomies:
+    p = {}
+    p['total_charge'] = person['base_rent'] + utils_per_person
+    p['base_rent'] = person['base_rent']
+    if not person['charge_on_venmo']:
+      print(p)
+    if person['charge_on_venmo']:
+      base_str = 'https://venmo.com/?txn=charge&amount=' + str(p['total_charge'])
+      base_str += '&note=rent&recipients=' + person['venmo_name']
+      print(base_str)
 
 def print_allowable_chores():
   ''' Print the allowable chores for each person
@@ -62,9 +124,9 @@ def assign_chores():
         return assign_chores()
     # Assign the chore
     chore_assignment[chore] = name
-  return chore_assignment
   # Print the final result!
   print(json.dumps(chore_assignment, sort_keys=True, indent=2))
+  return chore_assignment
 
 def build_html_from_json():
   chore_assignment = assign_chores()
@@ -93,8 +155,9 @@ def main():
     options = [
         {"name": "Show all the roomates, and what chores they can do", "fn": print_allowable_chores},
         {"name": "Create json for chores", "fn": assign_chores},
-        {"name": "Create json for chores and post to website by making a rest api call", "fn": make_api_call},
         {"name": "Create html", "fn": build_html_from_json},
+        {"name": "Print venmo status", "fn": print_venmo_status},
+        {"name": "Calculate bill for venmo", "fn": calculate_total_charges}
     ]
 
     for i in range(len(options)):
