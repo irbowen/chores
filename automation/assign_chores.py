@@ -67,11 +67,10 @@ def calculate_total_charges():
       rent_sum += person['base_rent']
       count += 1
   
-  print(rent_sum)
   remaining_rent = float(total_rent) - float(rent_sum)
-  print(remaining_rent)
   rent_per_person = remaining_rent / (len(roomies) - count)
-  print(rent_per_person)
+  rent_str = 'Rent per person is ' + str(rent_per_person)
+  print(rent_str)
 
   for person in roomies:
     if 'base_rent' not in person:
@@ -82,17 +81,15 @@ def calculate_total_charges():
   aa_water = input('How much was ann arbor water? ')
   utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
   print('The utils will be %s per person' % (utils_per_person))
-  
+
   for person in roomies:
-    p = {}
-    p['total_charge'] = person['base_rent'] + utils_per_person
-    p['base_rent'] = person['base_rent']
-    if not person['charge_on_venmo']:
-      print(p)
+    person['total_charge'] = person['base_rent'] + utils_per_person
     if person['charge_on_venmo']:
-      base_str = 'https://venmo.com/?txn=charge&amount=' + str(p['total_charge'])
+      base_str = 'https://venmo.com/?txn=charge&amount=' + str(person['total_charge'])
       base_str += '&note=rent&recipients=' + person['venmo_name']
-      print(base_str)
+      person['venmo_url'] = base_str
+  
+  print(json.dumps(roomies, sort_keys=True, indent=2))
 
 def print_allowable_chores():
   ''' Print the allowable chores for each person
