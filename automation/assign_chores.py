@@ -1,55 +1,18 @@
+#!/usr/bin/python3
+
 import json
 import random
+import time
+from selenium import webdriver
+
+import functions as f
+import constants as c
+
+roomies = c.roomies
 
 date = 'Sunday, Sept. 25th'
 
-shared_chores = ['living_room', 'dining_room', 'porches_and_shoe_area']
-downstairs_chores = ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'downstairs_bathroom']
-upstairs_chores = ['upstairs_kitchenn', 'upstairs_bathroom', 'hallway_and_stairwell']
 
-default_downstairs = shared_chores + downstairs_chores
-default_upstairs = shared_chores + upstairs_chores
-
-roomies = [
-    {'name':'Isaac', 
-      'charge_on_venmo' : False,
-      'allowable_chores': default_downstairs},
-    {'name':'Dieter', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'klemchowda',
-      'allowable_chores': default_downstairs},
-    {'name':'Faris', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'farisdizdarevic',
-      'allowable_chores': default_downstairs},
-    {'name':'Justin', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'kimsjustin',
-      'allowable_chores': default_downstairs},
-    {'name':'Amr', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'kimsjustin',
-      'allowable_chores': shared_chores + ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'upstairs_bathroom']},
-    {'name':'Jake', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'Jacob-Oestreich',
-      'allowable_chores': default_upstairs},
-    {'name':'Matt', 
-      'charge_on_venmo' : True,
-      'venmo_name' : 'Matt-Dolan-5',
-      'base_rent' : 476,
-      'allowable_chores': default_upstairs},
-    {'name':'Zac', 
-      'charge_on_venmo' : False,
-      'allowable_chores': default_upstairs},
-    {'name':'Marc', 
-      'charge_on_venmo' : False,
-      'base_rent' : 411,
-      'allowable_chores': default_upstairs},
-    {'name':'Alex', 
-      'charge_on_venmo' : False,
-      'base_rent' : 411,
-      'allowable_chores': ['trash']}]
 
 def print_venmo_status():
   for person in roomies:
@@ -57,8 +20,7 @@ def print_venmo_status():
       out_str = person['name'] + ':' + person['venmo_name']
       print(out_str)
 
-def calculate_total_charges():
-
+def interactively_update_charges(previous_charges):
   total_rent = input('How much was rent? ')
   rent_sum = 0
   count = 0
@@ -82,22 +44,32 @@ def calculate_total_charges():
   utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
   print('The utils will be %s per person' % (utils_per_person))
 
+def build_venmo_links():
   for person in roomies:
     person['total_charge'] = person['base_rent'] + utils_per_person
     if person['charge_on_venmo']:
       base_str = 'https://venmo.com/?txn=charge&amount=' + str(person['total_charge'])
       base_str += '&note=rent&recipients=' + person['venmo_name']
       person['venmo_url'] = base_str
-  
+ 
+      driver = webdriver.Chrome()
+      driver.get(base_str);
+      time.sleep(5) # Let the user actually see something!
+      search_box = driver.find_element_by_name('q')
+      search_box.send_keys('ChromeDriver')
+      search_box.submit()
+      time.sleep(5) # Let the user actually see something!
+      driver.quit()
   print(json.dumps(roomies, sort_keys=True, indent=2))
 
-def print_allowable_chores():
-  ''' Print the allowable chores for each person
-  using json.dumps() '''
-  print(json.dumps(roomies, sort_keys=True, indent=2))
+def calculate_total_charges():
+  print('First, we load the current state of the debt from our state file')
 
-def make_api_call():
-  print("Not done yet")
+  with open('data.json') as data_file:
+    data = json.load(data_file)
+    interactively_update_charges(data)
+    dump_to_file()
+    build_venmo_links()
 
 def assign_chores():
   # Keep track of how many times we have failed to assign chores
@@ -150,7 +122,7 @@ def main():
     print("Welcome to the 427 Hamplace chore management script\n")
 
     options = [
-        {"name": "Show all the roomates, and what chores they can do", "fn": print_allowable_chores},
+        {"name": "Show all the roomates, and what chores they can do", "fn": f.print_allowable_chores},
         {"name": "Create json for chores", "fn": assign_chores},
         {"name": "Create html", "fn": build_html_from_json},
         {"name": "Print venmo status", "fn": print_venmo_status},
