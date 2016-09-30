@@ -11,7 +11,7 @@ import time
 from functions import *
 from constants import *
 
-def interactively_update_charges(previous_charges):
+def interactively_update_charges():
   total_rent = input('How much was rent? ')
   rent_sum = 0
   count = 0
@@ -35,6 +35,16 @@ def interactively_update_charges(previous_charges):
   utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
   print('The utils will be %s per person' % (utils_per_person))
 
+  update = input('Would you like to update the data.json file?(yes/no)')
+  if update == 'yes':
+    for roomie in roomies:
+      roomie['util_balance'] += utils_per_person
+    print('Cool, let\'s do it')
+    with open('data.json', 'w') as outfile:
+          json.dump(roomies, outfile, sort_keys=True, indent=2)
+  else:
+    print('Okay, but it doesn\'t make much sense to run this script then...')
+
 def build_venmo_links():
   for person in roomies:
     person['total_charge'] = person['base_rent'] + utils_per_person
@@ -52,15 +62,6 @@ def build_venmo_links():
       time.sleep(5) # Let the user actually see something!
       driver.quit()
   print(json.dumps(roomies, sort_keys=True, indent=2))
-
-def calculate_total_charges():
-  print('First, we load the current state of the debt from our state file')
-
-  with open('data.json') as data_file:
-    data = json.load(data_file)
-    interactively_update_charges(data)
-    dump_to_file()
-    build_venmo_links()
 
 def assign_chores():
   # Keep track of how many times we have failed to assign chores
@@ -113,10 +114,14 @@ def main():
     if os.path.isfile('data.json'):
       print('Using custom roomies data, stored in file...')
       with open('data.json') as data_file:
-        roomies = json.load(data_file)
+        data = json.load(data_file)
     else:
+      data = None
       print('Using default roomies data...')
-
+    if data is None:
+      print('data is none')
+    else:
+      roomies = data
     print_help(options)
 
     while True:
@@ -131,6 +136,8 @@ def main():
         assign_chores()
       if cmd == 'html':
         build_html_from_json(assign_chores())
+      if cmd == 'calc':
+        interactively_update_charges()
 
 if __name__ == '__main__':
   main()
