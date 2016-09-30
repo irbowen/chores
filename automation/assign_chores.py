@@ -3,7 +3,8 @@
 import json
 import random
 import time
-from selenium import webdriver
+import readline
+import shlex
 
 import functions as f
 import constants as c
@@ -11,8 +12,6 @@ import constants as c
 roomies = c.roomies
 
 date = 'Sunday, Sept. 25th'
-
-
 
 def print_venmo_status():
   for person in roomies:
@@ -113,30 +112,32 @@ def build_html_from_json():
   base_str += r'</table></div></div>'
   print(base_str)
 
+
+def print_help(options):
+  print("These are your options...\n")
+  for option in options:
+    print(option['command'], "\t", option['desc'])
+
+
 def main():
     print("Welcome to the 427 Hamplace chore management script\n")
 
     options = [
-        {"name": "Show all the roomates, and what chores they can do", "fn": f.print_allowable_chores},
-        {"name": "Create json for chores", "fn": assign_chores},
-        {"name": "Create html", "fn": build_html_from_json},
-        {"name": "Print venmo status", "fn": print_venmo_status},
-        {"name": "Calculate bill for venmo", "fn": calculate_total_charges}
+        {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
+        {'command' : 'json', 'desc' : ''},
+        {'command' : 'html', 'desc' : ''},
+        {'command' : 'venmo', 'desc' : ''},
+        {'command' : 'calc', 'desc' : 'Calculate the bill'},
+        {'command' : 'exit', 'desc' : 'Exit the program'},
+        {'command' : 'help', 'desc' : 'Print this menu'}
     ]
 
-    for i in range(len(options)):
-        print(str(i + 1) + ". " + options[i]["name"])
-
-    option = input("\nSelect an option: ")
-
-    try:
-        selected_option = options[int(option) - 1]
-    except:
-        print("\nERROR: Invalid option. Script done.")
-        return
-
-    print("")
-    selected_option["fn"]()
+    while True:
+      cmd, *args = shlex.split(input('> '))
+      if cmd == 'exit':
+        break
+      if cmd == 'help':
+        print_help(options)
 
 if __name__ == '__main__':
   main()
