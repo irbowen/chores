@@ -4,6 +4,7 @@ import datetime
 import json
 import os
 import random
+import subprocess
 import readline
 import shlex
 import time
@@ -86,17 +87,8 @@ def assign_chores():
     # Assign the chore
     chore_assignment[chore] = name
   # Print the final result!
-  print(json.dumps(chore_assignment, sort_keys=True, indent=2))
   return chore_assignment
 
-def build_html_from_json(json):
-  base_str = '<div class="container"><div class="panel panel-default"><div class="panel-heading"> Chores must be done by midnight on <b>' + get_next_sunday() + '</b></div><table class="table table-striped"><tr><td><b>Chore</b></td><td><b>Name</b></td><td><b>Done?</b></td></tr>'
-
-  for chore,name in sorted(json.items()):
-    base_str += '<tr> <td>' + chore + '</td> <td>' + name + '</td> <td> </td> </tr>'
-
-  base_str += '</table></div></div>'
-  print(base_str)
 
 def main():
     print("Welcome to the 427 Hamplace chore management script\n")
@@ -133,12 +125,13 @@ def main():
       if cmd == 'list':
         print_allowable_chores()
       if cmd == 'json':
-        assign_chores()
+        print(json.dumps(assign_chores(), sort_keys=True, indent=2))
       if cmd == 'html':
-        build_html_from_json(assign_chores())
+        print(build_html_from_json(assign_chores()))
       if cmd == 'calc':
         interactively_update_charges()
-
+      if cmd == 'clear':
+        subprocess.call('clear', shell=True)
 if __name__ == '__main__':
   main()
 
