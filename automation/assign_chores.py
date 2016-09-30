@@ -1,23 +1,15 @@
 #!/usr/bin/python3
 
+import datetime
 import json
+import os
 import random
-import time
 import readline
 import shlex
+import time
 
-import functions as f
-import constants as c
-
-roomies = c.roomies
-
-date = 'Sunday, Sept. 25th'
-
-def print_venmo_status():
-  for person in roomies:
-    if person['charge_on_venmo']:
-      out_str = person['name'] + ':' + person['venmo_name']
-      print(out_str)
+from functions import *
+from constants import *
 
 def interactively_update_charges(previous_charges):
   total_rent = input('How much was rent? ')
@@ -74,7 +66,7 @@ def assign_chores():
   # Keep track of how many times we have failed to assign chores
   # given the current configuration
   fail_count = 0
-  
+
   # The current chore assignment
   chore_assignment = {}
 
@@ -96,28 +88,14 @@ def assign_chores():
   print(json.dumps(chore_assignment, sort_keys=True, indent=2))
   return chore_assignment
 
-def build_html_from_json():
-  chore_assignment = assign_chores()
-  base_str = '<div class="container"><div class="panel panel-default"><div class="panel-heading"> Chores must be done by midnight on <b>'
-  base_str += date
-  base_str += '</b></div><table class="table table-striped"><tr><td><b>Chore</b></td><td><b>Name</b></td><td><b>Done?</b></td></tr>'
+def build_html_from_json(json):
+  base_str = '<div class="container"><div class="panel panel-default"><div class="panel-heading"> Chores must be done by midnight on <b>' + get_next_sunday() + '</b></div><table class="table table-striped"><tr><td><b>Chore</b></td><td><b>Name</b></td><td><b>Done?</b></td></tr>'
 
-  for chore,name in sorted(chore_assignment.items()):
-    base_str += '<tr> <td>'
-    base_str += chore
-    base_str += '</td> <td>'
-    base_str += name
-    base_str += '</td> <td> </td> </tr>'
+  for chore,name in sorted(json.items()):
+    base_str += '<tr> <td>' + chore + '</td> <td>' + name + '</td> <td> </td> </tr>'
 
-  base_str += r'</table></div></div>'
+  base_str += '</table></div></div>'
   print(base_str)
-
-
-def print_help(options):
-  print("These are your options...\n")
-  for option in options:
-    print(option['command'], "\t", option['desc'])
-
 
 def main():
     print("Welcome to the 427 Hamplace chore management script\n")
@@ -132,12 +110,27 @@ def main():
         {'command' : 'help', 'desc' : 'Print this menu'}
     ]
 
+    if os.path.isfile('data.json'):
+      print('Using custom roomies data, stored in file...')
+      with open('data.json') as data_file:
+        roomies = json.load(data_file)
+    else:
+      print('Using default roomies data...')
+
+    print_help(options)
+
     while True:
       cmd, *args = shlex.split(input('> '))
       if cmd == 'exit':
         break
       if cmd == 'help':
         print_help(options)
+      if cmd == 'list':
+        print_allowable_chores()
+      if cmd == 'json':
+        assign_chores()
+      if cmd == 'html':
+        build_html_from_json(assign_chores())
 
 if __name__ == '__main__':
   main()
