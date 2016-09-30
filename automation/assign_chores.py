@@ -99,22 +99,17 @@ def assign_chores():
 
 def build_html_from_json():
   chore_assignment = assign_chores()
-  base_str = '''
-    <div class="container">
-      <div class="panel panel-default">
-        <div class="panel-heading"> Chores must be done by midnight on <b>'''
+  base_str = '<div class="container"><div class="panel panel-default"><div class="panel-heading"> Chores must be done by midnight on <b>'
   base_str += date
-  base_str += '''</b> </div>
-          <table class="table table-striped">
-            <tr>  <td><b>Chore</b></td>                   <td><b>Name</b></td>    <td><b>Done?</b></td></tr>'''
+  base_str += '</b></div><table class="table table-striped"><tr><td><b>Chore</b></td><td><b>Name</b></td><td><b>Done?</b></td></tr>'
 
-  for chore,name in chore_assignment.items():
+  for chore,name in sorted(chore_assignment.items()):
     base_str += '<tr> <td>'
     base_str += chore
     base_str += '</td> <td>'
     base_str += name
     base_str += '</td> <td> </td> </tr>'
-  
+
   base_str += r'</table></div></div>'
   print(base_str)
 

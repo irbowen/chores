@@ -35,7 +35,7 @@ roomies = [
     {'name':'Amr', 
       'charge_on_venmo' : True,
       'venmo_name' : 'kimsjustin',
-      'allowable_chores': shared_chores + ['downstairs_kitchen_monday', 'downstairs_ktichen_wednesday', 'upstairs_bathroom'],
+      'allowable_chores': shared_chores + ['downstairs_kitchen_sunday', 'downstairs_ktichen_wednesday', 'upstairs_bathroom'],
       'rent_balance' : 0,
       'util_balance' : 0},
     {'name':'Jake', 
