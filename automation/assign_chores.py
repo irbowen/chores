@@ -1,26 +1,18 @@
 #!/usr/bin/python3
 
+import datetime
 import json
+import os
 import random
+import subprocess
+import readline
+import shlex
 import time
-from selenium import webdriver
 
-import functions as f
-import constants as c
+from functions import *
+from constants import *
 
-roomies = c.roomies
-
-date = 'Sunday, Sept. 25th'
-
-
-
-def print_venmo_status():
-  for person in roomies:
-    if person['charge_on_venmo']:
-      out_str = person['name'] + ':' + person['venmo_name']
-      print(out_str)
-
-def interactively_update_charges(previous_charges):
+def interactively_update_charges():
   total_rent = input('How much was rent? ')
   rent_sum = 0
   count = 0
@@ -44,6 +36,16 @@ def interactively_update_charges(previous_charges):
   utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
   print('The utils will be %s per person' % (utils_per_person))
 
+  update = input('Would you like to update the data.json file?(yes/no)')
+  if update == 'yes':
+    for roomie in roomies:
+      roomie['util_balance'] += utils_per_person
+    print('Cool, let\'s do it')
+    with open('data.json', 'w') as outfile:
+          json.dump(roomies, outfile, sort_keys=True, indent=2)
+  else:
+    print('Okay, but it doesn\'t make much sense to run this script then...')
+
 def build_venmo_links():
   for person in roomies:
     person['total_charge'] = person['base_rent'] + utils_per_person
@@ -62,20 +64,11 @@ def build_venmo_links():
       driver.quit()
   print(json.dumps(roomies, sort_keys=True, indent=2))
 
-def calculate_total_charges():
-  print('First, we load the current state of the debt from our state file')
-
-  with open('data.json') as data_file:
-    data = json.load(data_file)
-    interactively_update_charges(data)
-    dump_to_file()
-    build_venmo_links()
-
 def assign_chores():
   # Keep track of how many times we have failed to assign chores
   # given the current configuration
   fail_count = 0
-  
+
   # The current chore assignment
   chore_assignment = {}
 
@@ -94,50 +87,51 @@ def assign_chores():
     # Assign the chore
     chore_assignment[chore] = name
   # Print the final result!
-  print(json.dumps(chore_assignment, sort_keys=True, indent=2))
   return chore_assignment
 
-def build_html_from_json():
-  chore_assignment = assign_chores()
-  base_str = '<div class="container"><div class="panel panel-default"><div class="panel-heading"> Chores must be done by midnight on <b>'
-  base_str += date
-  base_str += '</b></div><table class="table table-striped"><tr><td><b>Chore</b></td><td><b>Name</b></td><td><b>Done?</b></td></tr>'
-
-  for chore,name in sorted(chore_assignment.items()):
-    base_str += '<tr> <td>'
-    base_str += chore
-    base_str += '</td> <td>'
-    base_str += name
-    base_str += '</td> <td> </td> </tr>'
-
-  base_str += r'</table></div></div>'
-  print(base_str)
 
 def main():
     print("Welcome to the 427 Hamplace chore management script\n")
 
     options = [
-        {"name": "Show all the roomates, and what chores they can do", "fn": f.print_allowable_chores},
-        {"name": "Create json for chores", "fn": assign_chores},
-        {"name": "Create html", "fn": build_html_from_json},
-        {"name": "Print venmo status", "fn": print_venmo_status},
-        {"name": "Calculate bill for venmo", "fn": calculate_total_charges}
+        {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
+        {'command' : 'json', 'desc' : ''},
+        {'command' : 'html', 'desc' : ''},
+        {'command' : 'venmo', 'desc' : ''},
+        {'command' : 'calc', 'desc' : 'Calculate the bill'},
+        {'command' : 'exit', 'desc' : 'Exit the program'},
+        {'command' : 'help', 'desc' : 'Print this menu'}
     ]
 
-    for i in range(len(options)):
-        print(str(i + 1) + ". " + options[i]["name"])
+    if os.path.isfile('data.json'):
+      print('Using custom roomies data, stored in file...')
+      with open('data.json') as data_file:
+        data = json.load(data_file)
+    else:
+      data = None
+      print('Using default roomies data...')
+    if data is None:
+      print('data is none')
+    else:
+      roomies = data
+    print_help(options)
 
-    option = input("\nSelect an option: ")
-
-    try:
-        selected_option = options[int(option) - 1]
-    except:
-        print("\nERROR: Invalid option. Script done.")
-        return
-
-    print("")
-    selected_option["fn"]()
-
+    while True:
+      cmd, *args = shlex.split(input('> '))
+      if cmd == 'exit':
+        break
+      if cmd == 'help':
+        print_help(options)
+      if cmd == 'list':
+        print_allowable_chores()
+      if cmd == 'json':
+        print(json.dumps(assign_chores(), sort_keys=True, indent=2))
+      if cmd == 'html':
+        print(build_html_from_json(assign_chores()))
+      if cmd == 'calc':
+        interactively_update_charges()
+      if cmd == 'clear':
+        subprocess.call('clear', shell=True)
 if __name__ == '__main__':
   main()
 
