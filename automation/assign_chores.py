@@ -135,4 +135,6 @@ def main():
         subprocess.call('clear', shell=True)
 
 
-if __name__ == '__main__': main() 
+if __name__ == '__main__':
+  main()
+
