@@ -8,7 +8,7 @@ default_upstairs = shared_chores + upstairs_chores
 
 
 # All of the starting information for the roomates
-roomies = [
+static_roomies = [
     {'name':'Isaac', 
       'charge_on_venmo' : False,
       'allowable_chores': default_downstairs,
