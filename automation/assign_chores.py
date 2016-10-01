@@ -32,7 +32,7 @@ def interactively_update_charges(roomies):
       if 'base_rent' not in person:
         person['base_rent'] = rent_per_person
     for person in roomies:
-        person['rent_balance'] += person['base_rent']
+      person['rent_balance'] += person['base_rent']
   comcast = input('How much was comcast? ') or 0
   dte = input('How much was dte - electricity and gas? ') or 0
   aa_water = input('How much was ann arbor water? ') or 0
@@ -44,7 +44,7 @@ def interactively_update_charges(roomies):
       roomie['util_balance'] += utils_per_person
     print('Cool, let\'s do it')
     with open('data.json', 'w') as outfile:
-          json.dump(roomies, outfile, sort_keys=True, indent=2)
+      json.dump(roomies, outfile, sort_keys=True, indent=2)
   else:
     print('Okay, but it doesn\'t make much sense to run this script then...')
 
@@ -135,6 +135,4 @@ def main():
         subprocess.call('clear', shell=True)
 
 
-if __name__ == '__main__':
-  main()
-
+if __name__ == '__main__': main() 

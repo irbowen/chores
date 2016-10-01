@@ -1,0 +1,153 @@
+[
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": false,
+    "name": "Isaac",
+    "rent_balance": 0,
+    "util_balance": 0
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": true,
+    "name": "Dieter",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "klemchowda"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": true,
+    "name": "Faris",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "farisdizdarevic"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": true,
+    "name": "Justin",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "kimsjustin"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "upstairs_bathroom"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": true,
+    "name": "Amr",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "kimsjustin"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": true,
+    "name": "Jake",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "Jacob-Oestreich"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "base_rent": 476,
+    "charge_on_venmo": true,
+    "name": "Matt",
+    "rent_balance": 0,
+    "util_balance": 0,
+    "venmo_name": "Matt-Dolan-5"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "base_rent": 486.0,
+    "charge_on_venmo": false,
+    "name": "Zac",
+    "rent_balance": 0,
+    "util_balance": 0
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "base_rent": 411,
+    "charge_on_venmo": false,
+    "name": "Marc",
+    "rent_balance": 0,
+    "util_balance": 0
+  },
+  {
+    "allowable_chores": [
+      "trash"
+    ],
+    "base_rent": 411,
+    "charge_on_venmo": false,
+    "name": "Alex",
+    "rent_balance": 0,
+    "util_balance": 0
+  }
+]
