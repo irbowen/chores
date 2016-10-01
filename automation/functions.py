@@ -10,12 +10,12 @@ def print_help(options):
   for option in options:
     print(option['command'], "\t", option['desc'])
 
-def print_allowable_chores():
+def print_allowable_chores(roomies):
   ''' Print the allowable chores for each person
   using json.dumps() '''
   print(json.dumps(roomies, sort_keys=True, indent=2))
 
-def print_venmo_status():
+def print_venmo_status(roomies):
   ''' Print out venmo names, if they exist '''
   for person in roomies:
     if person['charge_on_venmo']:

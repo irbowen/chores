@@ -4,38 +4,40 @@ import datetime
 import json
 import os
 import random
-import subprocess
 import readline
 import shlex
+import subprocess
 import time
 
 from functions import *
 from constants import *
 
-def interactively_update_charges():
-  total_rent = input('How much was rent? ')
-  rent_sum = 0
-  count = 0
-  for person in roomies:
-    if 'base_rent' in person:
-      rent_sum += person['base_rent']
-      count += 1
-  
-  remaining_rent = float(total_rent) - float(rent_sum)
-  rent_per_person = remaining_rent / (len(roomies) - count)
-  rent_str = 'Rent per person is ' + str(rent_per_person)
-  print(rent_str)
-
-  for person in roomies:
-    if 'base_rent' not in person:
-      person['base_rent'] = rent_per_person
-
-  comcast = input('How much was comcast? ')
-  dte = input('How much was dte - electricity and gas? ')
-  aa_water = input('How much was ann arbor water? ')
+def interactively_update_charges(roomies):
+  charge_rent = input('Charge rent?(yes/no)')
+  if charge_rent == 'yes':
+    total_rent = input('How much was rent? (Leave blank to use defaults) ') or 4700
+    rent_sum = 0
+    count = 0
+    for person in roomies:
+      if 'base_rent' in person:
+        rent_sum += person['base_rent']
+        count += 1
+    remaining_rent = float(total_rent) - float(rent_sum)
+    rent_per_person = 0
+    if count < len(roomies):
+      rent_per_person = remaining_rent / (len(roomies) - count)
+    rent_str = 'Rent per person is ' + str(rent_per_person)
+    print(rent_str)
+    for person in roomies:
+      if 'base_rent' not in person:
+        person['base_rent'] = rent_per_person
+    for person in roomies:
+        person['rent_balance'] += person['base_rent']
+  comcast = input('How much was comcast? ') or 0
+  dte = input('How much was dte - electricity and gas? ') or 0
+  aa_water = input('How much was ann arbor water? ') or 0
   utils_per_person = sum([float(comcast), float(dte), float(aa_water)])/len(roomies)
   print('The utils will be %s per person' % (utils_per_person))
-
   update = input('Would you like to update the data.json file?(yes/no)')
   if update == 'yes':
     for roomie in roomies:
@@ -64,14 +66,12 @@ def build_venmo_links():
       driver.quit()
   print(json.dumps(roomies, sort_keys=True, indent=2))
 
-def assign_chores():
+def assign_chores(roomies):
   # Keep track of how many times we have failed to assign chores
   # given the current configuration
   fail_count = 0
-
   # The current chore assignment
   chore_assignment = {}
-
   # We look at each person, and try to build a chore schedule
   for person in roomies:
     # Get their name and a chore they can do
@@ -83,7 +83,7 @@ def assign_chores():
       chore = random.choice(person['allowable_chores'])
       # If we have failed more than 1000 times, give up and call the function again
       if (fail_count > 1000):
-        return assign_chores()
+        return assign_chores(roomies)
     # Assign the chore
     chore_assignment[chore] = name
   # Print the final result!
@@ -110,10 +110,11 @@ def main():
     else:
       data = None
       print('Using default roomies data...')
+
     if data is None:
       print('data is none')
-    else:
-      roomies = data
+ 
+    print(data)
     print_help(options)
 
     while True:
@@ -123,15 +124,17 @@ def main():
       if cmd == 'help':
         print_help(options)
       if cmd == 'list':
-        print_allowable_chores()
+        print_allowable_chores(data)
       if cmd == 'json':
-        print(json.dumps(assign_chores(), sort_keys=True, indent=2))
+        print(json.dumps(assign_chores(data), sort_keys=True, indent=2))
       if cmd == 'html':
-        print(build_html_from_json(assign_chores()))
+        print(build_html_from_json(assign_chores(data)))
       if cmd == 'calc':
-        interactively_update_charges()
+        interactively_update_charges(data)
       if cmd == 'clear':
         subprocess.call('clear', shell=True)
+
+
 if __name__ == '__main__':
   main()
 
