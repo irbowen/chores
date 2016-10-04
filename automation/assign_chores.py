@@ -48,23 +48,17 @@ def interactively_update_charges(roomies):
   else:
     print('Okay, but it doesn\'t make much sense to run this script then...')
 
-def build_venmo_links():
+def build_venmo_links(roomies):
+  links = []
   for person in roomies:
-    person['total_charge'] = person['base_rent'] + utils_per_person
+    person['total_charge'] = person['rent_balance'] + person['util_balance']
     if person['charge_on_venmo']:
-      base_str = 'https://venmo.com/?txn=charge&amount=' + str(person['total_charge'])
-      base_str += '&note=rent&recipients=' + person['venmo_name']
+      base_str = 'https://venmo.com/?txn=charge&amount=' + str(round(person['total_charge'], 2))
+      base_str += '&note=script_auto_charge&recipients=' + person['venmo_name']
       person['venmo_url'] = base_str
- 
-      driver = webdriver.Chrome()
-      driver.get(base_str);
-      time.sleep(5) # Let the user actually see something!
-      search_box = driver.find_element_by_name('q')
-      search_box.send_keys('ChromeDriver')
-      search_box.submit()
-      time.sleep(5) # Let the user actually see something!
-      driver.quit()
-  print(json.dumps(roomies, sort_keys=True, indent=2))
+      links.append({'name': person['name'], 'venmo_link' : person['venmo_url']})
+  
+  print(json.dumps(links, sort_keys=True, indent=2))
 
 def assign_chores(roomies):
   # Keep track of how many times we have failed to assign chores
@@ -129,6 +123,8 @@ def main():
         print(json.dumps(assign_chores(data), sort_keys=True, indent=2))
       if cmd == 'html':
         print(build_html_from_json(assign_chores(data)))
+      if cmd == 'venmo':
+        build_venmo_links(data)
       if cmd == 'calc':
         interactively_update_charges(data)
       if cmd == 'clear':
