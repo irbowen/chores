@@ -34,7 +34,7 @@ static_roomies = [
       'util_balance' : 0},
     {'name':'Amr', 
       'charge_on_venmo' : True,
-      'venmo_name' : 'kimsjustin',
+      'venmo_name' : 'AmrDowair',
       'allowable_chores': shared_chores + ['downstairs_kitchen_sunday', 'downstairs_ktichen_wednesday', 'upstairs_bathroom'],
       'rent_balance' : 0,
       'util_balance' : 0},
