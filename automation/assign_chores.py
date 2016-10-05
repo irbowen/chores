@@ -50,11 +50,12 @@ def interactively_update_charges(roomies):
 
 def build_venmo_links(roomies):
   links = []
+  friendly_note = 'that_time_of_the_month_at_427'
   for person in roomies:
     person['total_charge'] = person['rent_balance'] + person['util_balance']
     if person['charge_on_venmo']:
       base_str = 'https://venmo.com/?txn=charge&amount=' + str(round(person['total_charge'], 2))
-      base_str += '&note=script_auto_charge&recipients=' + person['venmo_name']
+      base_str += '&note=' + friendly_note + '&recipients=' + person['venmo_name']
       person['venmo_url'] = base_str
       links.append({'name': person['name'], 'venmo_link' : person['venmo_url']})
   
