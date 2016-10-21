@@ -11,8 +11,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": false,
     "name": "Isaac",
-    "rent_balance": 0,
-    "util_balance": 65.223
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002
   },
   {
     "allowable_chores": [
@@ -26,8 +26,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": true,
     "name": "Dieter",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002,
     "venmo_name": "klemchowda"
   },
   {
@@ -42,8 +42,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": true,
     "name": "Faris",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002,
     "venmo_name": "farisdizdarevic"
   },
   {
@@ -58,8 +58,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": true,
     "name": "Justin",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002,
     "venmo_name": "kimsjustin"
   },
   {
@@ -74,8 +74,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": true,
     "name": "Amr",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002,
     "venmo_name": "AmrDowair"
   },
   {
@@ -90,8 +90,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": true,
     "name": "Jake",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002,
     "venmo_name": "Jacob-Oestreich"
   },
   {
@@ -106,8 +106,8 @@
     "base_rent": 476,
     "charge_on_venmo": true,
     "name": "Matt",
-    "rent_balance": 0,
-    "util_balance": 65.223,
+    "rent_balance": 476,
+    "util_balance": 29.237000000000002,
     "venmo_name": "Matt-Dolan-5"
   },
   {
@@ -122,8 +122,8 @@
     "base_rent": 486.0,
     "charge_on_venmo": false,
     "name": "Zac",
-    "rent_balance": 0,
-    "util_balance": 65.223
+    "rent_balance": 486.0,
+    "util_balance": 29.237000000000002
   },
   {
     "allowable_chores": [
@@ -137,8 +137,8 @@
     "base_rent": 411,
     "charge_on_venmo": false,
     "name": "Marc",
-    "rent_balance": 0,
-    "util_balance": 65.223
+    "rent_balance": 411,
+    "util_balance": 29.237000000000002
   },
   {
     "allowable_chores": [
@@ -147,7 +147,7 @@
     "base_rent": 411,
     "charge_on_venmo": false,
     "name": "Alex",
-    "rent_balance": 0,
-    "util_balance": 65.223
+    "rent_balance": 411,
+    "util_balance": 29.237000000000002
   }
 ]

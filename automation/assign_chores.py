@@ -12,6 +12,14 @@ import time
 from functions import *
 from constants import *
 
+def zero_debts(roomies):
+  for roomie in roomies:
+      roomie['rent_balance'] = 0
+      roomie['util_balance'] = 0
+
+def interactively_update_payments(roomies):
+  pass
+
 def interactively_update_charges(roomies):
   charge_rent = input('Charge rent?(yes/no)')
   if charge_rent == 'yes':
@@ -33,6 +41,7 @@ def interactively_update_charges(roomies):
         person['base_rent'] = rent_per_person
     for person in roomies:
       person['rent_balance'] += person['base_rent']
+      print(person['rent_balance'])
   comcast = input('How much was comcast? ') or 0
   dte = input('How much was dte - electricity and gas? ') or 0
   aa_water = input('How much was ann arbor water? ') or 0
@@ -86,51 +95,54 @@ def assign_chores(roomies):
 
 
 def main():
-    print("Welcome to the 427 Hamplace chore management script\n")
+  print("Welcome to the 427 Hamplace chore management script\n")
 
-    options = [
-        {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
-        {'command' : 'json', 'desc' : ''},
-        {'command' : 'html', 'desc' : ''},
-        {'command' : 'venmo', 'desc' : ''},
-        {'command' : 'calc', 'desc' : 'Calculate the bill'},
-        {'command' : 'exit', 'desc' : 'Exit the program'},
-        {'command' : 'help', 'desc' : 'Print this menu'}
-    ]
+  options = [
+      {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
+      {'command' : 'json', 'desc' : ''},
+      {'command' : 'html', 'desc' : ''},
+      {'command' : 'calc', 'desc' : 'Calculate the bill'},
+      {'command' : 'pay', 'desc' : 'Get payments from roommates'},
+      {'command' : 'venmo', 'desc' : ''},
+      {'command' : 'exit', 'desc' : 'Exit the program'},
+      {'command' : 'help', 'desc' : 'Print this menu'}
+  ]
 
-    if os.path.isfile('data.json'):
-      print('Using custom roomies data, stored in file...')
-      with open('data.json') as data_file:
-        data = json.load(data_file)
-    else:
-      data = None
-      print('Using default roomies data...')
+  if os.path.isfile('data.json'):
+    print('Using custom roomies data, stored in file...')
+    with open('data.json') as data_file:
+      data = json.load(data_file)
+  else:
+    data = None
+    print('Using default roomies data...')
 
-    if data is None:
-      print('data is none')
- 
-    print(data)
-    print_help(options)
+  if data is None:
+    print('data is none')
 
-    while True:
-      cmd, *args = shlex.split(input('> '))
-      if cmd == 'exit':
-        break
-      if cmd == 'help':
-        print_help(options)
-      if cmd == 'list':
-        print_allowable_chores(data)
-      if cmd == 'json':
-        print(json.dumps(assign_chores(data), sort_keys=True, indent=2))
-      if cmd == 'html':
-        print(build_html_from_json(assign_chores(data)))
-      if cmd == 'venmo':
-        build_venmo_links(data)
-      if cmd == 'calc':
-        interactively_update_charges(data)
-      if cmd == 'clear':
-        subprocess.call('clear', shell=True)
+  print_help(options)
 
+  while True:
+    cmd, *args = shlex.split(input('> '))
+    if cmd == 'exit':
+      break
+    if cmd == 'help':
+      print_help(options)
+    if cmd == 'list':
+      print_allowable_chores(data)
+    if cmd == 'json':
+      print(json.dumps(assign_chores(data), sort_keys=True, indent=2))
+    if cmd == 'html':
+      print(build_html_from_json(assign_chores(data)))
+    if cmd == 'venmo':
+      build_venmo_links(data)
+    if cmd == 'calc':
+      interactively_update_charges(data)
+    if cmd == 'pay':
+      interactively_update_payments(data)
+    if cmd == 'clear':
+      subprocess.call('clear', shell=True)
+    if cmd == 'zero':
+      zero_debts(data)
 
 if __name__ == '__main__':
   main()
