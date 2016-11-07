@@ -32,6 +32,7 @@ def sendmail(text, config_filename):
         sendmail.host = config.get("smtp_server", "host")
         sendmail.port = config.get("smtp_server", "port")
         sendmail.username = config.get("smtp_server", "username")
+        sendmail.password = config.get("smtp_server", "password")
         print(">>> Read SMTP server configuration from {}".format(
             config_filename))
         print(">>>   host = {}".format(sendmail.host))
