@@ -1,0 +1,117 @@
+[
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "name": "Isaac",
+    "umich" : "irbowen"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "name": "Dieter",
+    "umich" : "dietdk"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "umich" : "fdizdar",
+    "name": "Faris"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "downstairs_bathroom"
+    ],
+    "name": "Justin",
+    "umich" : "justink"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "downstairs_kitchen_sunday",
+      "downstairs_ktichen_wednesday",
+      "upstairs_bathroom"
+    ],
+    "name": "Amr",
+    "umich" : "aammrrrr"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "name": "Jake",
+    "umich" : "oesjacob"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "name": "Matt",
+    "umich" : "mjdolan"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "name": "Zac",
+    "umich" : "haaszac"
+  },
+  {
+    "allowable_chores": [
+      "living_room",
+      "dining_room",
+      "porches_and_shoe_area",
+      "upstairs_kitchen",
+      "upstairs_bathroom",
+      "hallway_and_stairwell"
+    ],
+    "name": "Marc",
+    "umich" : "marcwm"
+  },
+  {
+    "allowable_chores": [
+      "trash"
+    ],
+    "name": "Alex",
+    "umich" : "anicho"
+  }
+]

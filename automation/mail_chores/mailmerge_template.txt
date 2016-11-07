@@ -1,0 +1,10 @@
+TO: {{umich}}@umich.edu
+SUBJECT: Testing mailmerge
+FROM: The chore bot <irbowen@umich.edu>
+
+Hi, {{name}}.
+
+This week, you have {{chore}} as you chore.  Please have this done by {{date}}.
+
+Friendly 427 chore bot,
+
