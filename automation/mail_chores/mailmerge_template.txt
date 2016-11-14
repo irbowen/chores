@@ -1,10 +1,11 @@
 TO: {{umich}}@umich.edu
-SUBJECT: 427 Chore Bot for week of {{date}}
-FROM: The chore bot <irbowen@umich.edu>
+SUBJECT: 427 Chores
+FROM: The 427 chore bot <irbowen@umich.edu>
 
-Hi, {{name}}.
+Hey, {{name}}.
 
-This week, you have {{chore}} as you chore.  Please have this done by {{date}}.
+This week, you have {{chore}} as you chore. Please have this done by {{date}}.
 
-Friendly 427 neighborhood chore bot,
+Friendly neighborhood 427 chore bot,
+
 
