@@ -10,8 +10,7 @@ import subprocess
 import time
 
 def assign_chores(roomies):
-  # Keep track of how many times we have failed to assign chores
-  # given the current configuration
+  # Keep track of how many times we have failed to assign chores given the current configuration
   fail_count = 0
   # The current chore assignment
   chore_assignment = {}
@@ -24,12 +23,11 @@ def assign_chores(roomies):
     while (chore in chore_assignment):
       fail_count += 1
       chore = random.choice(person['allowable_chores'])
-      # If we have failed more than 1000 times, give up and call the function again
-      if (fail_count > 1000):
+      # If we have failed more than 100 times, give up and call the function again
+      if (fail_count > 100):
         return assign_chores(roomies)
     # Assign the chore
     chore_assignment[chore] = name
-  # Print the final result!
   return chore_assignment
 
 def get_next_sunday():
@@ -55,12 +53,9 @@ def build_csv_from_json(json, data):
   return base_str
 
 def main():
-
-  if os.path.isfile('data.json'):
-    with open('data.json') as data_file:
-      data = json.load(data_file)
-  else:
-      sys.exit()
+  assert os.path.isfile('data.json')
+  with open('data.json') as data_file:
+    data = json.load(data_file)
 
   print(build_csv_from_json(assign_chores(data), data))
 
