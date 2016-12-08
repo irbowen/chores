@@ -9,7 +9,9 @@ import shlex
 import subprocess
 import time
 
-def assign_chores(roomies):
+from data import roomies
+
+def assign_chores():
   # Keep track of how many times we have failed to assign chores given the current configuration
   fail_count = 0
   # The current chore assignment
@@ -25,7 +27,7 @@ def assign_chores(roomies):
       chore = random.choice(person['allowable_chores'])
       # If we have failed more than 100 times, give up and call the function again
       if (fail_count > 100):
-        return assign_chores(roomies)
+        return assign_chores()
     # Assign the chore
     chore_assignment[chore] = name
   return chore_assignment
@@ -53,11 +55,8 @@ def build_csv_from_json(json, data):
   return base_str
 
 def main():
-  assert os.path.isfile('data.json')
-  with open('data.json') as data_file:
-    data = json.load(data_file)
 
-  print(build_csv_from_json(assign_chores(data), data))
+  print(build_csv_from_json(assign_chores(), roomies))
 
 if __name__ == '__main__':
   main()

@@ -6,8 +6,9 @@ rm mailmege_database.csv
 cp mailmerge_starting_database.csv mailmerge_database.csv
 
 # Assign chores and concat to end of file
-python3 assign_chores.py >> mailmerge_database.csv
+python3 assign_chores.py | sort >> mailmerge_database.csv
+sed -i '/^$/d' mailmerge_database.csv
 
 # Mail the chores out
-mailmerge --no-dry-run --no-limit
+mailmerge --dry-run --no-limit
 
