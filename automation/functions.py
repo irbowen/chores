@@ -10,7 +10,7 @@ def print_help(options):
   for option in options:
     print(option['command'], "\t", option['desc'])
 
-def print_allowable_chores(roomies):
+def print_roomies(roomies):
   ''' Print the allowable chores for each person
   using json.dumps() '''
   print(json.dumps(roomies, sort_keys=True, indent=2))

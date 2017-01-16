@@ -23,22 +23,6 @@ def interactively_update_payments(roomies):
 def interactively_update_charges(roomies):
   charge_rent = input('Charge rent?(yes/no)')
   if charge_rent == 'yes':
-    total_rent = input('How much was rent? (Leave blank to use defaults) ') or 4700
-    rent_sum = 0
-    count = 0
-    for person in roomies:
-      if 'base_rent' in person:
-        rent_sum += person['base_rent']
-        count += 1
-    remaining_rent = float(total_rent) - float(rent_sum)
-    rent_per_person = 0
-    if count < len(roomies):
-      rent_per_person = remaining_rent / (len(roomies) - count)
-    rent_str = 'Rent per person is ' + str(rent_per_person)
-    print(rent_str)
-    for person in roomies:
-      if 'base_rent' not in person:
-        person['base_rent'] = rent_per_person
     for person in roomies:
       person['rent_balance'] += person['base_rent']
       print(person['rent_balance'])
@@ -59,15 +43,15 @@ def interactively_update_charges(roomies):
 
 def build_venmo_links(roomies):
   links = []
-  friendly_note = 'that_time_of_the_month_at_427'
+  friendly_note = 'dec_utils'
   for person in roomies:
     person['total_charge'] = person['rent_balance'] + person['util_balance']
     if person['charge_on_venmo']:
-      base_str = 'https://venmo.com/?txn=charge&amount=' + str(round(person['total_charge'], 2))
-      base_str += '&note=' + friendly_note + '&recipients=' + person['venmo_name']
+      base_str = 'https://venmo.com/?txn=charge&amount=%s&note=%s&recipients=%s' % (
+              str(round(person['total_charge'], 2)), friendly_note, person['venmo_name'])
       person['venmo_url'] = base_str
       links.append({'name': person['name'], 'venmo_link' : person['venmo_url']})
-  
+
   print(json.dumps(links, sort_keys=True, indent=2))
 
 
@@ -75,9 +59,10 @@ def main():
   print("Welcome to the 427 Hamplace chore management script\n")
 
   options = [
+      {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
       {'command' : 'calc', 'desc' : 'Calculate the bill'},
       {'command' : 'pay', 'desc' : 'Get payments from roommates'},
-      {'command' : 'venmo', 'desc' : ''},
+      {'command' : 'venmo', 'desc' : 'Charge them on venmo'},
       {'command' : 'exit', 'desc' : 'Exit the program'},
       {'command' : 'help', 'desc' : 'Print this menu'}
   ]
@@ -85,13 +70,10 @@ def main():
   if os.path.isfile('data.json'):
     print('Using custom roomies data, stored in file...')
     with open('data.json') as data_file:
-      data = json.load(data_file)
+      roomies = json.load(data_file)
   else:
-    data = None
+    roomies = static_roomies
     print('Using default roomies data...')
-
-  if data is None:
-    print('data is none')
 
   print_help(options)
 
@@ -101,16 +83,18 @@ def main():
       break
     if cmd == 'help':
       print_help(options)
+    if cmd == 'list':
+      print_roomies(roomies)
     if cmd == 'venmo':
-      build_venmo_links(data)
+      build_venmo_links(roomies)
     if cmd == 'calc':
-      interactively_update_charges(data)
+      interactively_update_charges(roomies)
     if cmd == 'pay':
-      interactively_update_payments(data)
+      interactively_update_payments(roomies)
     if cmd == 'clear':
       subprocess.call('clear', shell=True)
     if cmd == 'zero':
-      zero_debts(data)
+      zero_debts(roomies)
 
 if __name__ == '__main__':
   main()
