@@ -70,37 +70,11 @@ def build_venmo_links(roomies):
   
   print(json.dumps(links, sort_keys=True, indent=2))
 
-def assign_chores(roomies):
-  # Keep track of how many times we have failed to assign chores
-  # given the current configuration
-  fail_count = 0
-  # The current chore assignment
-  chore_assignment = {}
-  # We look at each person, and try to build a chore schedule
-  for person in roomies:
-    # Get their name and a chore they can do
-    name = person['name']
-    chore = random.choice(person['allowable_chores'])
-    # Check to make sure no one else is already doing this chore
-    while (chore in chore_assignment):
-      fail_count += 1
-      chore = random.choice(person['allowable_chores'])
-      # If we have failed more than 1000 times, give up and call the function again
-      if (fail_count > 1000):
-        return assign_chores(roomies)
-    # Assign the chore
-    chore_assignment[chore] = name
-  # Print the final result!
-  return chore_assignment
-
 
 def main():
   print("Welcome to the 427 Hamplace chore management script\n")
 
   options = [
-      {'command' : 'list', 'desc' : 'Show all the roomates, and what chores they can do'},
-      {'command' : 'json', 'desc' : ''},
-      {'command' : 'html', 'desc' : ''},
       {'command' : 'calc', 'desc' : 'Calculate the bill'},
       {'command' : 'pay', 'desc' : 'Get payments from roommates'},
       {'command' : 'venmo', 'desc' : ''},
@@ -127,12 +101,6 @@ def main():
       break
     if cmd == 'help':
       print_help(options)
-    if cmd == 'list':
-      print_allowable_chores(data)
-    if cmd == 'json':
-      print(json.dumps(assign_chores(data), sort_keys=True, indent=2))
-    if cmd == 'html':
-      print(build_html_from_json(assign_chores(data)))
     if cmd == 'venmo':
       build_venmo_links(data)
     if cmd == 'calc':
